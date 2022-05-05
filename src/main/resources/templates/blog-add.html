@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Blog of site</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="blocks/header :: header"> </header>
+
+<div class="container mt-5 mb-5">
+    <h1>Add Post</h1>
+
+
+
+    <form action="/blog/add" method="post" enctype="multipart/form-data">
+
+        <input type="text" name="title" placeholder="Write the name of the post" class="form-control"><br>
+        <input type="text" name="anons" placeholder="Write the anons of the post" class="form-control"><br>
+        <textarea name="full_text" placeholder="Write the full text of the post" class="form-control"></textarea><br>
+
+        <button type="submit" class="btn btn-success">Add post</button>
+    </form>
+</div>
+
+
+<div>
+    <form action="/blog/add/upload" method="post" enctype="multipart/form-data">
+
+        <div th:if="${message}">
+            <h2 th:text="${message}"></h2>
+        </div>
+
+        <div>
+            <table>
+                <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
+            </table>
+        </div>
+
+        <div>
+            <ul>
+                <li th:each="file : ${files}">
+                    <a th:href="${file}" th:text="${file}"></a>
+                </li>
+            </ul>
+        </div>
+
+        <button type="submit" class="btn btn-warning">Upload</button>
+    </form>
+</div>
+
+<div th:insert="blocks/footer :: footer"></div>
+
+</body>
+</html>
