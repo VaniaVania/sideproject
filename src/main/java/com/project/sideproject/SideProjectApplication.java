@@ -9,16 +9,16 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class SideProjectApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(SideProjectApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SideProjectApplication.class, args);
+    }
 
-	@Bean
-	CommandLineRunner init(StorageService storageService) {
-		return (args) -> {
-			storageService.deleteAll();
-			storageService.init();
-		};
-	}
+    @Bean
+    CommandLineRunner init(StorageService storageService) {
+        return (args) -> {
+
+        };
+    }
 }
 
+			            	

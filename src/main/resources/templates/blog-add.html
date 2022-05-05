@@ -23,30 +23,24 @@
     </form>
 </div>
 
+<div th:if="${message}">
+    <h2 th:text="${message}"></h2>
+</div>
+
+<form th:method="POST" enctype="multipart/form-data" action="/blog/add/upload">
+    <table>
+        <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
+        <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
+    </table>
+</form>
+
 
 <div>
-    <form action="/blog/add/upload" method="post" enctype="multipart/form-data">
-
-        <div th:if="${message}">
-            <h2 th:text="${message}"></h2>
-        </div>
-
-        <div>
-            <table>
-                <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
-            </table>
-        </div>
-
-        <div>
-            <ul>
-                <li th:each="file : ${files}">
-                    <a th:href="${file}" th:text="${file}"></a>
-                </li>
-            </ul>
-        </div>
-
-        <button type="submit" class="btn btn-warning">Upload</button>
-    </form>
+    <ul>
+        <li th:each="file : ${files}">
+            <a th:href="${file}" th:text="${files}"></a>
+        </li>
+    </ul>
 </div>
 
 <div th:insert="blocks/footer :: footer"></div>

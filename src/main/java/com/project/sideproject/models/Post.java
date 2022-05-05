@@ -1,9 +1,7 @@
 package com.project.sideproject.models;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.persistence.*;
-import java.awt.*;
+import java.util.List;
 
 @Entity
 public class Post {
@@ -12,8 +10,16 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String title, anons, full_text;
-    private int views;
     private String fileLink;
+
+
+    public Post(Long id, String title, String anons, String full_text, String fileLink) {
+        this.id = id;
+        this.title = title;
+        this.anons = anons;
+        this.full_text = full_text;
+        this.fileLink = fileLink;
+    }
 
     public Post() {
     }
@@ -56,14 +62,6 @@ public class Post {
 
     public void setFull_text(String full_text) {
         this.full_text = full_text;
-    }
-
-    public int getViews() {
-        return views;
-    }
-
-    public void setViews(int views) {
-        this.views = views;
     }
 
     public String getFileLink() {

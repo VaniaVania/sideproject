@@ -14,7 +14,6 @@
     <form th:method="PATCH">
         <input type="text" th:value="${el.title}" name="title" placeholder="Write the name of the post" class="form-control"><br>
         <input type="text" th:value="${el.anons}" name="anons" placeholder="Write the anons of the post" class="form-control"><br>
-        <p><input type="image" src="https://s1.1zoom.me/b4861/36/Datsun_JDM_240Z_Black_564765_2560x1440.jpg" alt="OK" height="480" width="720"><p>
         <textarea  name="full_text" th:value="${el.full_text}" placeholder="Write the full text of the post" class="form-control"></textarea><br>
         <button type="submit" class="btn btn-success">Edit post</button>
     </form>
