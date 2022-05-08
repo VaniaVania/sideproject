@@ -15,13 +15,15 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
 public class FileUploadController {
 
 
-    private static String fileLink;
+    private static final List<String> fileLink = new ArrayList<>();
     private final StorageService storageService;
 
     @Autowired
@@ -33,7 +35,7 @@ public class FileUploadController {
     @PostMapping("/blog/add/upload")
     public String handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
         storageService.store(file);
-        fileLink = "/images/" + file.getOriginalFilename();
+        fileLink.add("/images/" + file.getOriginalFilename());
 
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
@@ -63,7 +65,7 @@ public class FileUploadController {
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
-    public static String getFileLink() {
+    public static List<String> getFileLink() {
         return fileLink;
     }
 

@@ -9,22 +9,16 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String title, anons, full_text;
-    private String fileLink;
+    @ElementCollection
+    private List<String> fileLink;
 
-
-    public Post(Long id, String title, String anons, String full_text, String fileLink) {
-        this.id = id;
-        this.title = title;
-        this.anons = anons;
-        this.full_text = full_text;
-        this.fileLink = fileLink;
-    }
 
     public Post() {
     }
 
-    public Post(String title, String anons, String full_text, String fileLink) {
+    public Post(String title, String anons, String full_text, List<String> fileLink) {
         this.title = title;
         this.anons = anons;
         this.full_text = full_text;
@@ -64,11 +58,11 @@ public class Post {
         this.full_text = full_text;
     }
 
-    public String getFileLink() {
+    public List<String> getFileLink() {
         return fileLink;
     }
 
-    public void setFileLink(String fileLink) {
+    public void setFileLink(List<String> fileLink) {
         this.fileLink = fileLink;
     }
 }
