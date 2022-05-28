@@ -1,9 +1,10 @@
 package com.project.sideproject.models;
-
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "post")
 public class Post {
 
     @Id
@@ -11,18 +12,20 @@ public class Post {
     private Long id;
 
     private String title, anons, full_text;
-    @ElementCollection
-    private List<String> fileLink;
 
+    @JoinColumn
+    @OneToMany(cascade = CascadeType.MERGE,
+            orphanRemoval = true)
+    private List<Image> images = new ArrayList<>();
 
     public Post() {
     }
 
-    public Post(String title, String anons, String full_text, List<String> fileLink) {
+    public Post(String title, String anons, String full_text, List<Image> images) {
         this.title = title;
         this.anons = anons;
         this.full_text = full_text;
-        this.fileLink = fileLink;
+        //this.images = images;
     }
 
     //GETTERS AND SETTERS
@@ -58,11 +61,11 @@ public class Post {
         this.full_text = full_text;
     }
 
-    public List<String> getFileLink() {
-        return fileLink;
+    public List<Image> getImages() {
+        return images;
     }
 
-    public void setFileLink(List<String> fileLink) {
-        this.fileLink = fileLink;
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 }

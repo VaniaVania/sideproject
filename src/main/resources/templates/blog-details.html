@@ -14,7 +14,13 @@
     <div th:each="el : ${post}" class="alert alert-dark ">
 
         <h3 th:text="${el.title}" class="text-center"></h3>
-        <img th:src="${el.fileLink}" class="rounded mx-auto d-block img-fluid">
+
+
+        <div th:each="img : ${images}">
+            <img th:src="${img.getImageLink()}" class="rounded mx-auto d-block img-fluid">
+        </div>
+
+
         <p th:align="center" th:text="${el.full_text}"></p>
 
         

@@ -1,5 +1,7 @@
 package com.project.sideproject.controllers;
 
+import com.project.sideproject.models.Image;
+import com.project.sideproject.repo.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -22,28 +24,26 @@ import java.util.stream.Collectors;
 @Controller
 public class FileUploadController {
 
-
-    private static final List<String> fileLink = new ArrayList<>();
+    private final ImageRepository imageRepository;
     private final StorageService storageService;
 
     @Autowired
-    public FileUploadController(StorageService storageService) {
+    public FileUploadController(StorageService storageService, ImageRepository imageRepository) {
         this.storageService = storageService;
+        this.imageRepository = imageRepository;
     }
 
 
     @PostMapping("/blog/add/upload")
     public String handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
         storageService.store(file);
-        fileLink.add("/images/" + file.getOriginalFilename());
-
+        Image image = new Image("/images/" + file.getOriginalFilename());
+        imageRepository.save(image);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
         return "redirect:/blog/add/upload";
     }
-
-
 
 
     @GetMapping("/blog/add/upload")
@@ -63,10 +63,6 @@ public class FileUploadController {
         Resource file = storageService.loadAsResource(filename);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
-    }
-
-    public static List<String> getFileLink() {
-        return fileLink;
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)

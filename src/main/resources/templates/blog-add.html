@@ -13,12 +13,11 @@
 
 
 
-    <form action="/blog/add" method="post" enctype="multipart/form-data">
+    <form th:method="POST" enctype="multipart/form-data" action="/blog/add" >
 
         <input type="text" name="title" placeholder="Write the name of the post" class="form-control"><br>
         <input type="text" name="anons" placeholder="Write the anons of the post" class="form-control"><br>
         <textarea name="full_text" placeholder="Write the full text of the post" class="form-control"></textarea><br>
-        <textarea name="fileLink" class="form-control"></textarea><br>
 
         <button type="submit" class="btn btn-success">Add post</button>
     </form>
@@ -36,13 +35,7 @@
 </form>
 
 
-<div>
-    <ul>
-        <li th:each="file : ${files}">
-            <a th:href="${file}" th:text="${files}"></a>
-        </li>
-    </ul>
-</div>
+
 
 <div th:insert="blocks/footer :: footer"></div>
 
