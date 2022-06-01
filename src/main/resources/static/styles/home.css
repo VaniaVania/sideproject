@@ -1,0 +1,46 @@
+/* Style the video: 100% width and height to cover the entire window */
+
+#myVideo {
+    position: center;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.body{
+    background-color: black;
+}
+
+/* Add some content at the bottom of the video/page */
+.content {
+    text-align: center;
+    position: sticky;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    color: #f80000;
+    width: 100%;
+    font-family: Bahnschrift, serif;
+}
+
+/* Style the button used to pause/play the video */
+#myBtn {
+    width: 200px;
+    font-size: 18px;
+    padding: 10px;
+    border: none;
+    background: #000;
+    color: #c50f0f;
+    cursor: pointer;
+}
+
+#myBtn:hover {
+    background: #ddd;
+    color: black;
+}
+
+#cards{
+    font-family: Bahnschrift, serif;
+}
+
+

@@ -1,16 +1,27 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <title>Blog of site</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="styles/blog-details.css">
+    <style href="styles/blog-details.css">
+        #blogDetails{
+            font-family: Bahnschrift, serif;
+        }
+
+        p{
+            font-family: Bahnschrift,serif;
+            text-align: left;
+        }
+    </style>
 
 </head>
 
-<header th:insert="blocks/header :: header" style="font-family: Bahnschrift,serif"> </header>
-<body class="bg-dark">
+<header th:insert="blocks/header :: header"> </header>
 
+<body class="bg-dark" id="blogDetails">
 <main>
 <div class="container-xl align-content-center ">
 
@@ -18,50 +29,44 @@
 
         <h3 th:text="${el.title}" class="text-center"></h3>
 
-
             <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-
                 <div class="carousel-inner">
 
                     <div class="carousel-item active">
-                        <img height="650" width="100%" th:src="${el.getImages_link().get(el.getImages_link().size()-1)}">
+                        <img height="650" width="100%" th:src="${el.getImages_link().get(0)}">
                     </div>
 
-                    <div th:each="img : ${el.getImages_link()}" class="carousel-item">
+                    <div th:each="img : ${el.getImages_link().remove(1)}" class="carousel-item">
                         <img height="650" width="100%" th:src="${img}">
                     </div>
-
                 </div>
 
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"  data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Предыдущий</span>
+                    <span class="visually-hidden">Наступний</span>
                 </button>
                 <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"  data-bs-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Следующий</span>
+                    <span class="visually-hidden">Попередній</span>
                 </button>
             </div>
 
 
+             <p th:text="${el.full_text}"></p>
 
-        <p style="font-family: Bahnschrift,serif" th:align="left" th:text="${el.full_text}"></p>
+             <hr style="color: #c50f0f">
+             <p th:text="'Posted: ' + ${el.post_data.toLocaleString()}  "></p>
 
-        <hr style="color: #c50f0f">
-        <p th:align="left" style="font-family: Bahnschrift,serif" th:text="'Posted: ' + ${el.post_data.toLocaleString()}  "></p>
+             <a th:href="'/blog/' + ${el.id} +'/edit'" class="btn btn-danger">Edit</a>
 
-
-        <a th:href="'/blog/' + ${el.id} +'/edit'" class="btn btn-danger">Edit</a>
-
-        <form th:action="'/blog/' + ${el.id} +'/delete'" th:method="DELETE">
-            <button class="btn btn-danger text-end" type="submit">Delete</button>
-        </form>
-
+             <form th:action="'/blog/' + ${el.id} +'/delete'" th:method="DELETE">
+                 <button class="btn btn-danger text-end" type="submit">Delete</button>
+              </form>
     </div>
 </div>
-    <div th:insert="blocks/footer :: footer" style="font-family: Bahnschrift,serif" class="bg-dark"></div>
 </main>
-
 </body>
+
+<div th:insert="blocks/footer :: footer"></div>
 
 </html>
