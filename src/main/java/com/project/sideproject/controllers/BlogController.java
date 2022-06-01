@@ -8,22 +8,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 import java.util.Optional;
 
 @Controller
 public class BlogController {
 
-
-    private final PostRepository postRepository;
     private final StorageService storageService;
+    private final PostRepository postRepository;
 
     @Autowired
-    public BlogController(StorageService storageService, PostRepository postRepository) {
-        this.storageService = storageService;
+    public BlogController(PostRepository postRepository, StorageService storageService) {
         this.postRepository = postRepository;
+        this.storageService = storageService;
     }
 
 
@@ -40,29 +40,29 @@ public class BlogController {
     }
 
     @PostMapping("/blog/add")
-    public String blogPostAdd(@RequestParam String title, @RequestParam String anons, @RequestParam String full_text, @RequestParam List<String> fileLink, Model model){
-        fileLink = FileUploadController.getFileLink();
-        Post post = new Post(title,anons,full_text,fileLink);
-
+    public String blogPostAdd(@RequestParam String title, @RequestParam String anons, @RequestParam String full_text , Model model){
+        Date date = new Date();
+        Post post = new Post(title,anons,full_text,FileUploadController.getImageLink(),date);
         postRepository.save(post);
+        FileUploadController.getImageLink().clear();
         return "redirect:/blog";
     }
 
     @GetMapping("/blog/{id}")
-    public String blogDetails(@PathVariable(value = "id") long id, Model model) {
+    public String blogDetails(@PathVariable(value = "id") Long id, Model model) {
         if (blogFormer(id, model)) return "redirect:/blog";
         return "blog-details";
     }
 
 
     @GetMapping("/blog/{id}/edit")
-    public String editPost(@PathVariable(value = "id") long id,Model model){
+    public String editPost(@PathVariable(value = "id") Long id,Model model){
         if (blogFormer(id, model)) return "redirect:/blog";
         return "blog-edit";
     }
 
     @PatchMapping("/blog/{id}/edit")
-    public String editBlogPost(@PathVariable(value = "id") long id, @RequestParam String title, @RequestParam String anons, @RequestParam String full_text,Model model){
+    public String editBlogPost(@PathVariable(value = "id") Long id, @RequestParam String title, @RequestParam String anons, @RequestParam String full_text,Model model){
         Post post = postRepository.findById(id).orElseThrow();
         post.setTitle(title);
         post.setAnons(anons);
@@ -73,15 +73,19 @@ public class BlogController {
     }
 
     @DeleteMapping("/blog/{id}/delete")
-    public String deletePost(@PathVariable(value = "id") long id, Model model) throws IOException {
+    public String deletePost(@PathVariable(value = "id") Long id, Model model) throws IOException {
         Post post = postRepository.findById(id).orElseThrow();
-        postRepository.delete(post);
-        storageService.deleteFile("src/main/resources/static" + post.getFileLink());
 
+        FileUploadController.getImageLink().clear();
+        for(String image: post.getImages_link()) {
+            System.out.println(image);
+            storageService.deleteFile("src/main/resources/static" + image);
+        }
+        postRepository.delete(post);
         return "redirect:/blog";
     }
 
-    private boolean blogFormer(@PathVariable("id") long id, Model model) {
+    private boolean blogFormer(@PathVariable("id") Long id, Model model) {
         if(!postRepository.existsById(id)){
             return true;
         }
@@ -91,6 +95,7 @@ public class BlogController {
         model.addAttribute("post", res);
         return false;
     }
+
 
 
 

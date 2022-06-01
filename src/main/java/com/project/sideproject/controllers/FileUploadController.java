@@ -1,7 +1,5 @@
 package com.project.sideproject.controllers;
 
-import com.project.sideproject.models.Image;
-import com.project.sideproject.repo.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -24,26 +22,31 @@ import java.util.stream.Collectors;
 @Controller
 public class FileUploadController {
 
-    private final ImageRepository imageRepository;
+    private static final List<String> imageLink = new ArrayList<>();
     private final StorageService storageService;
 
+
     @Autowired
-    public FileUploadController(StorageService storageService, ImageRepository imageRepository) {
+    public FileUploadController(StorageService storageService) {
         this.storageService = storageService;
-        this.imageRepository = imageRepository;
     }
 
 
     @PostMapping("/blog/add/upload")
     public String handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
         storageService.store(file);
-        Image image = new Image("/images/" + file.getOriginalFilename());
-        imageRepository.save(image);
+        imageLink.add("/images/" + file.getOriginalFilename());
+
+
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
         return "redirect:/blog/add/upload";
     }
+
+
+
+
 
 
     @GetMapping("/blog/add/upload")
@@ -71,5 +74,7 @@ public class FileUploadController {
     }
 
 
-
+    public static List<String> getImageLink() {
+        return imageLink;
+    }
 }

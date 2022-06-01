@@ -16,6 +16,7 @@ public class MainController {
     @Autowired
     private PostRepository postRepository;
 
+
     @GetMapping("/")
     public String home(Model model){
         model.addAttribute("title", "Main page");
@@ -30,4 +31,5 @@ public class MainController {
         model.addAttribute("title", "About us");
         return "about";
     }
+
 }
