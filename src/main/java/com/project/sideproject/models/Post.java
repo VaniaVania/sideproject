@@ -1,6 +1,6 @@
 package com.project.sideproject.models;
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.awt.*;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +14,8 @@ public class Post {
 
     private String title, anons, full_text;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "post_images_link", joinColumns = @JoinColumn(name = "post_id"))
     private List<String> images_link;
 
     @JoinColumn(name = "post_data")

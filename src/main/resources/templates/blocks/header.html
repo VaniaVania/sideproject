@@ -1,5 +1,5 @@
 <div th:fragment="header" id="headerFont">
-    <link rel="stylesheet" type="text/css" href="styles/header.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/header.css}">
 <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4  dropdown-header bg-dark border-bottom border-danger" >
     <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-dice-5-fill" viewBox="0 0 16 16">
@@ -11,9 +11,31 @@
     <nav class="mt-2 mt-md-0 ms-md-auto bg-danger rounded-bottom">
         <a class="me-3 py-2 text-dark text-decoration-none" href="/" >Main</a>
         <a class="me-3 py-2 text-dark text-decoration-none" href="/blog">Blog</a>
-        <a class="me-3 py-2 text-dark text-decoration-none" href="/blog/add">Add post</a>
-        <a class="me-3 py-2 text-dark text-decoration-none" href="/about">Car Finder</a>
-        <a class="me-3 py-2 text-dark text-decoration-none" href="/login">Login</a>
+        <a class="me-3 py-2 text-dark text-decoration-none" href="/find">Car Finder</a>
+
+
+        <div class="btn-group">
+            <a class="btn btn-secondary dropdown-toggle bg-danger text-dark" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                Sign in
+            </a>
+            <ul class="dropdown-menu bg-danger me-3 py-2" aria-labelledby="dropdownMenuButton">
+                <li><a class="text-decoration-none dropdown-item" href="/login">Login</a></li>
+                <li>
+                    <form class="dropdown-item bg-danger text-dark" th:action="@{/logout}" th:method="POST">
+                            <input class="me-3 py-2 bg-danger text-dark" type="submit" value="Sign Out"/>
+                    </form>
+                </li>
+
+            </ul>
+        </div>
+
+
+
     </nav>
+
+
+
+
+
 </div>
 </div>

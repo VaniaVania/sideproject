@@ -7,8 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.io.IOException;
-
 
 @Controller
 public class MainController {
@@ -25,11 +23,10 @@ public class MainController {
         return "home";
     }
 
-
-    @GetMapping("/about")
-    public String about(Model model) throws IOException {
+    @GetMapping("/find")
+    public String about(Model model){
         model.addAttribute("title", "About us");
-        return "about";
+        return "car-finder";
     }
 
 }
