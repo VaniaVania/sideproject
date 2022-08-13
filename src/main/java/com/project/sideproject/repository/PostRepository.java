@@ -1,4 +1,4 @@
-package com.project.sideproject.repo;
+package com.project.sideproject.repository;
 
 import com.project.sideproject.models.Post;
 import org.springframework.data.repository.CrudRepository;

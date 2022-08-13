@@ -1,4 +1,4 @@
-package com.project.sideproject.storage;
+package com.project.sideproject.service;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;

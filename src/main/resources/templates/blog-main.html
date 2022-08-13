@@ -18,13 +18,13 @@
 
     <div th:each="el : ${posts}" class="alert alert-light mt-2">
         <h3 id="title" th:text="${el.title}"></h3>
-            <img th:src="'/images/' + ${el.getImages_link().get(0)}" class="rounded mx-auto d-block img-fluid">
+            <img th:if="${!el.getImages().isEmpty()}" th:src="'/images/' + ${el.getImages().get(0)}" class="rounded mx-auto d-block img-fluid">
 
 
         <p th:text="${el.anons}"></p>
         <a th:href="'/blog/' + ${el.id}" class="btn btn-danger">Read</a>
         <small>
-            <p id="postedTime" class="card-text" th:text="'Posted: ' + ${el.getPost_data().toLocaleString()}"> </p>
+            <p id="postedTime" class="card-text" th:text="'Posted: ' + ${el.getData().toLocaleString()}"> </p>
         </small>
 
     </div>

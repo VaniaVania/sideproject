@@ -20,7 +20,7 @@
             <div th:each="el : ${posts}" class="col" >
                 <div class="card shadow-sm border-danger">
 
-                    <img th:src="'/images/' + ${el.getImages_link().get(0)}" width="100%" height="225">
+                    <img th:if="${!el.getImages().isEmpty()}" th:src="'/images/' + ${el.getImages().get(0)}" width="100%" height="225">
 
 
                     <div class="card-body">
@@ -34,14 +34,14 @@
                                 <a th:href="'/blog/' + ${el.id}" class="btn btn-sm btn-outline-secondary">View</a>
                             </div>
 
-                            <a th:href="'/blog/' + ${el.id} +'/edit'" class="btn btn-danger">Edit</a>
+                            <a th:href="'/admin/blog/' + ${el.id} +'/edit'" class="btn btn-danger">Edit</a>
 
-                            <form th:action="'/blog/' + ${el.id} +'/delete'" th:method="DELETE">
+                            <form th:action="'/admin/blog/' + ${el.id} +'/delete'" th:method="DELETE">
                                 <button class="btn btn-danger text-end" type="submit">Delete</button>
                             </form>
                         </div>
                         <small>
-                            <p class="card-text" th:text="${el.getPost_data().toLocaleString()}"> </p>
+                            <p class="card-text" th:text="${el.getData().toLocaleString()}"> </p>
                         </small>
                     </div>
                 </div>

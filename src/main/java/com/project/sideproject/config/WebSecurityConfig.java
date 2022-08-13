@@ -25,6 +25,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(
                 // Загрузка статики не зважаючи на роль
                 "/images/**",
+                "/videos/**",
                 "/database/**",
                 "/js/**",
                 "/styles/**",

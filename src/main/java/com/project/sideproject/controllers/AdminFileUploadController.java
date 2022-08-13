@@ -1,12 +1,12 @@
 package com.project.sideproject.controllers;
 
 import com.project.sideproject.models.Post;
-import com.project.sideproject.repo.PostRepository;
+import com.project.sideproject.repository.PostRepository;
 import com.project.sideproject.storage.StorageFileNotFoundException;
-import com.project.sideproject.storage.StorageService;
+import com.project.sideproject.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,8 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/blog")
-public class FileUploadController {
+@RequestMapping(value = "/admin/blog/")
+@PreAuthorize("hasAuthority('ADMIN')")
+public class AdminFileUploadController {
 
     private final StorageService storageService;
     private final PostRepository postRepository;
@@ -26,7 +27,7 @@ public class FileUploadController {
 
 
     @Autowired
-    public FileUploadController(StorageService storageService, PostRepository postRepository) {
+    public AdminFileUploadController(StorageService storageService, PostRepository postRepository) {
         this.storageService = storageService;
         this.postRepository = postRepository;
     }
@@ -38,26 +39,26 @@ public class FileUploadController {
 
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
-        return "redirect:/blog/add";
+        return "redirect:/admin/blog/add";
     }
 
     @PostMapping("/{id}/edit/upload")
     public String updateImageList(@PathVariable(value = "id") Long id, @RequestParam("uploadFile") MultipartFile file){
         storageService.store(file);
         Post post = postRepository.findById(id).orElseThrow();
-        post.getImages_link().add(file.getOriginalFilename());
+        post.getImages().add(file.getOriginalFilename());
         postRepository.save(post);
-        return "redirect:/blog/{id}/edit";
+        return "redirect:/admin/blog/{id}/edit";
     }
 
 
     @DeleteMapping("/{id}/{filename}/delete")
-    public String deleteImage(@PathVariable Long id, @PathVariable String filename) throws IOException {
+    public String deletePostImage(@PathVariable Long id, @PathVariable String filename) throws IOException {
         Post post = postRepository.findById(id).orElseThrow();
         storageService.deleteFile("src/main/resources/static/images/" + filename);
-        post.getImages_link().remove(filename);
+        post.getImages().remove(filename);
         postRepository.save(post);
-        return "redirect:/blog/{id}/edit";
+        return "redirect:/admin/blog/{id}/edit";
     }
 
     @DeleteMapping("add/{filename}/delete")
@@ -65,10 +66,8 @@ public class FileUploadController {
         storageService.deleteFile("src/main/resources/static/images/" + filename);
         imagesList.remove(filename);
 
-        return "redirect:/blog/add";
+        return "redirect:/admin/blog/add";
     }
-
-
 
     @ExceptionHandler(StorageFileNotFoundException.class)
     public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {

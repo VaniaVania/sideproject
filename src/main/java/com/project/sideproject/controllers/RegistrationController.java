@@ -2,7 +2,7 @@ package com.project.sideproject.controllers;
 
 import com.project.sideproject.models.Role;
 import com.project.sideproject.models.User;
-import com.project.sideproject.repo.UserRepository;
+import com.project.sideproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +14,13 @@ import java.util.Map;
 @Controller
 public class RegistrationController {
 
+
+    private final UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
+    public RegistrationController(UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
 
     @GetMapping("/registration")
     public String registration() {

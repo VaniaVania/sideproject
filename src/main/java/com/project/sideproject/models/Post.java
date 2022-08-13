@@ -1,6 +1,5 @@
 package com.project.sideproject.models;
 import javax.persistence.*;
-import java.awt.*;
 import java.util.Date;
 import java.util.List;
 
@@ -12,30 +11,30 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String title, anons, full_text;
+    private String title, anons, fullText;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "post_images_link", joinColumns = @JoinColumn(name = "post_id"))
-    private List<String> images_link;
+    private List<String> images;
 
     @JoinColumn(name = "post_data")
-    private Date post_data;
+    private Date data;
 
     public Post() {
     }
 
-    public Post(String title, String anons, String full_text, List<String> images_link, Date post_data) {
+    public Post(String title, String anons, String fullText, List<String> images, Date data) {
         this.title = title;
         this.anons = anons;
-        this.full_text = full_text;
-        this.images_link = images_link;
-        this.post_data = post_data;
+        this.fullText = fullText;
+        this.images = images;
+        this.data = data;
     }
 
-    public Post(String title, String anons, String full_text) {
+    public Post(String title, String anons, String fullText) {
         this.title = title;
         this.anons = anons;
-        this.full_text = full_text;
+        this.fullText = fullText;
     }
 
     //GETTERS AND SETTERS
@@ -63,38 +62,38 @@ public class Post {
         this.anons = anons;
     }
 
-    public String getFull_text() {
-        return full_text;
+    public String getFullText() {
+        return fullText;
     }
 
-    public void setFull_text(String full_text) {
-        this.full_text = full_text;
+    public void setFullText(String full_text) {
+        this.fullText = full_text;
     }
 
-    public List<String> getImages_link() {
-        return images_link;
+    public List<String> getImages() {
+        return images;
     }
 
-    public void setImages_link(List<String> images_link) {
-        this.images_link = images_link;
+    public void setImages(List<String> images_link) {
+        this.images = images_link;
     }
 
-    public Date getPost_data() {
-        return post_data;
+    public Date getData() {
+        return data;
     }
 
-    public void setPost_data(Date post_data) {
-        this.post_data = post_data;
+    public void setData(Date post_data) {
+        this.data = post_data;
     }
 
 
     @Override
     public String toString() {
-        return "Posted: " + post_data.getDay() +
-                "." + post_data.getMonth() +
-                "." + post_data.getYear() +
-                "in " + post_data.getHours() +
-                ":" + post_data.getMinutes();
+        return "Posted: " + data.getDay() +
+                "." + data.getMonth() +
+                "." + data.getYear() +
+                "in " + data.getHours() +
+                ":" + data.getMinutes();
     }
 
 

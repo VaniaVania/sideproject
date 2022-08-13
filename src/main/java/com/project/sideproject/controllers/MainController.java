@@ -1,7 +1,7 @@
 package com.project.sideproject.controllers;
 
 import com.project.sideproject.models.Post;
-import com.project.sideproject.repo.PostRepository;
+import com.project.sideproject.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
