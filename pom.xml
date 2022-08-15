@@ -15,7 +15,6 @@
 	<description>Spring Boot Project </description>
 	<properties>
 		<java.version>11</java.version>
-        <kotlin.version>1.6.20</kotlin.version>
     </properties>
 
 	<dependencies>
@@ -133,25 +132,9 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>2.6.3</version>
 			</plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>testCompile</id>
-                        <phase>test-compile</phase>
-                        <goals>
-                            <goal>testCompile</goal>
-                        </goals>
-                    </execution>
-                </executions>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
 					<source>11</source>
 					<target>11</target>
