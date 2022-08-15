@@ -17,7 +17,7 @@ public class Post {
     @CollectionTable(name = "post_images_link", joinColumns = @JoinColumn(name = "post_id"))
     private List<String> images;
 
-    @JoinColumn(name = "post_data")
+    @JoinColumn(name = "data")
     private Date data;
 
     public Post() {
