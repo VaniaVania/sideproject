@@ -24,7 +24,7 @@
                 <div class="carousel-inner">
 
                     <div class="carousel-item active">
-                        <img height="650" width="100%" th:src="'/images/' + ${el.images.remove(0)}">
+                        <img height="650" width="100%" th:src="@{'/images/' + ${el.images.remove(0)}}">
                     </div>
 
                     <div class="carousel-item" th:each="img : ${el.images}">

@@ -11,9 +11,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Controller
@@ -86,6 +89,10 @@ public class AdminController {
     @GetMapping("/blog/add")
     public String blogAdd(Model model) {
         model.addAttribute("imageList", AdminFileUploadController.getImageList());
+    model.addAttribute("files", storageService.loadAll().map(
+                        path -> MvcUriComponentsBuilder.fromMethodName(AdminFileUploadController.class,
+                                "serveFile", path.getFileName().toString()).build().toUri().toString())
+            .collect(Collectors.toList()));
         return "blog-add";
     }
 
