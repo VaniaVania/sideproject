@@ -89,10 +89,6 @@ public class AdminController {
     @GetMapping("/blog/add")
     public String blogAdd(Model model) {
         model.addAttribute("imageList", AdminFileUploadController.getImageList());
-    model.addAttribute("files", storageService.loadAll().map(
-                        path -> MvcUriComponentsBuilder.fromMethodName(AdminFileUploadController.class,
-                                "serveFile", path.getFileName().toString()).build().toUri().toString())
-            .collect(Collectors.toList()));
         return "blog-add";
     }
 

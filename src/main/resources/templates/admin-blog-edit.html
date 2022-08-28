@@ -20,7 +20,7 @@
             <div th:each="el : ${posts}" class="col" >
                 <div class="card shadow-sm border-danger">
 
-                    <img th:if="${!el.getImages().isEmpty()}" th:src="'/images/' + ${el.getImages().get(0)}" width="100%" height="225">
+                    <img th:if="${!el.getImages().isEmpty()}" th:src="'/admin/blog/files/' + ${el.getImages().get(0)}" width="100%" height="225">
 
 
                     <div class="card-body">
