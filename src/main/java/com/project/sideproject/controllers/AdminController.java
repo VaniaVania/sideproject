@@ -5,6 +5,7 @@ import com.project.sideproject.models.Role;
 import com.project.sideproject.models.User;
 import com.project.sideproject.repository.PostRepository;
 import com.project.sideproject.repository.UserRepository;
+import com.project.sideproject.service.PostService;
 import com.project.sideproject.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,12 +28,14 @@ public class AdminController {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final StorageService storageService;
+    private final PostService postService;
 
     @Autowired
-    public AdminController(UserRepository userRepository, PostRepository postRepository, StorageService storageService){
+    public AdminController(UserRepository userRepository, PostRepository postRepository, StorageService storageService, PostService postService){
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.storageService = storageService;
+        this.postService = postService;
     }
 
     @GetMapping
@@ -40,10 +43,10 @@ public class AdminController {
         return "admin-panel";
     }
 
-
     @GetMapping("/users")
     public String userList(Model model){
         model.addAttribute("users", userRepository.findAll());
+
         return "user-list";
     }
 
@@ -51,6 +54,7 @@ public class AdminController {
     public String userEditForm(@PathVariable User user, Model model){
         model.addAttribute("user",user);
         model.addAttribute("roles", Role.values());
+
         return "user-edit";
     }
 
@@ -66,8 +70,8 @@ public class AdminController {
                 user.getRoles().add(Role.valueOf(key));
             }
         }
-
         userRepository.save(user);
+
         return "redirect:/admin/users";
     }
 
@@ -76,6 +80,7 @@ public class AdminController {
         User userFromDb = userRepository.findById(id).orElseThrow();
         userRepository.delete(userFromDb);
         model.addAttribute("user", userFromDb);
+
         return "redirect:/admin/users";
     }
 
@@ -83,27 +88,31 @@ public class AdminController {
     public String editPost(Model model){
         Iterable<Post> posts = postRepository.findAll();
         model.addAttribute("posts", posts);
+
         return "admin-blog-edit";
     }
 
     @GetMapping("/blog/add")
     public String blogAdd(Model model) {
-        model.addAttribute("imageList", AdminFileUploadController.getImageList());
+        model.addAttribute("imageList", postService.getImagesList());
+
         return "blog-add";
     }
 
     @PostMapping("/blog/add")
     public String blogPostAdd(@RequestParam String title, @RequestParam String anons, @RequestParam String fullText){
-        Post post = new Post(title,anons,fullText, AdminFileUploadController.getImageList(),new Date());
+        Post post = new Post(title,anons,fullText, postService.getImagesList() ,new Date());
         postRepository.save(post);
-        AdminFileUploadController.getImageList().clear();
+        postService.getImagesList().clear();
+
         return "redirect:/blog";
     }
 
 
     @GetMapping("blog/{id}/edit")
     public String editPost(@PathVariable(value = "id") Long id,Model model){
-        if (blogFormer(id, model)) return "redirect:/blog";
+        if (postService.postShow(id,model,postRepository)) return "redirect:/blog";
+
         return "blog-edit";
     }
 
@@ -127,23 +136,9 @@ public class AdminController {
                 storageService.deleteFile("src/main/resources/static/images/" + image);
             }
         }
-
         postRepository.delete(post);
+
         return "redirect:/blog";
     }
 
-    private boolean blogFormer(@PathVariable("id") Long id, Model model) {
-        return postShow(id, model, postRepository);
-    }
-
-    static boolean postShow(@PathVariable("id") Long id, Model model, PostRepository postRepository) {
-        if(!postRepository.existsById(id)){
-            return true;
-        }
-        Optional<Post> post = postRepository.findById(id);
-        ArrayList<Post> res = new ArrayList<>();
-        post.ifPresent(res::add);
-        model.addAttribute("post", res);
-        return false;
-    }
 }

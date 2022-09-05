@@ -20,7 +20,7 @@
 
             <input type="text" th:value="${el.title}" name="title" placeholder="Write the name of the post" class="form-control"><br>
             <input type="text" th:value="${el.anons}" name="anons" placeholder="Write the anons of the post" class="form-control"><br>
-            <textarea th:value="${el.fullText}" name="fullText" placeholder="Write the full text of the post" class="form-control"></textarea>
+            <textarea th:text="${el.fullText}" name="fullText" placeholder="Write the full text of the post" class="form-control"></textarea>
 
 
         <div class="album py-5 bg-light bg-dark" id="cards">

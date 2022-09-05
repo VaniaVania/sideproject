@@ -1,6 +1,9 @@
-package com.project.sideproject.storage;
+package com.project.sideproject.service;
 
 import com.project.sideproject.service.StorageService;
+import com.project.sideproject.storage.StorageException;
+import com.project.sideproject.storage.StorageFileNotFoundException;
+import com.project.sideproject.storage.StorageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;

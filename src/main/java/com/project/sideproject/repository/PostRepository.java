@@ -1,8 +1,12 @@
 package com.project.sideproject.repository;
 
 import com.project.sideproject.models.Post;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface  PostRepository extends CrudRepository<Post, Long> {
+import java.util.List;
 
+@Repository
+public interface PostRepository extends JpaRepository<Post, Long> {
+    Post findByImages(String image);
 }
