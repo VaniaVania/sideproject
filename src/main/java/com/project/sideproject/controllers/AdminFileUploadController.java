@@ -1,19 +1,15 @@
 package com.project.sideproject.controllers;
 
-import com.project.sideproject.models.Post;
-import com.project.sideproject.repository.PostRepository;
 import com.project.sideproject.service.PostService;
 import com.project.sideproject.storage.StorageFileNotFoundException;
 import com.project.sideproject.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -21,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Path;
 
 @Controller
 @RequestMapping(value = "/admin/blog/")
@@ -36,19 +31,6 @@ public class AdminFileUploadController {
     public AdminFileUploadController(StorageService storageService,PostService postService) {
         this.storageService = storageService;
         this.postService = postService;
-    }
-
-
-    @RequestMapping(value = "/files/{filename:.+}", method = RequestMethod.GET,
-            produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<byte[]> ListImage(@PathVariable String filename) throws IOException{
-        File file = storageService.load(filename).toFile();
-        FileInputStream fis = new FileInputStream(file);
-        byte [] image = fis.readAllBytes();
-        final HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_JPEG);
-        fis.close();
-        return new ResponseEntity<byte[]>(image, headers, HttpStatus.CREATED);
     }
 
     @PostMapping("/add/upload")

@@ -18,7 +18,7 @@
 
     <div th:each="el : ${posts}" class="alert alert-light mt-2">
         <h3 id="title" th:text="${el.title}"></h3>
-            <img th:if="${!el.getImages().isEmpty()}" th:src="'/admin/blog/files/' + ${el.getImages().get(0)}" class="rounded mx-auto d-block img-fluid">
+            <img th:if="${!el.getImages().isEmpty()}" th:src="'/blog/files/' + ${el.getImages().get(0)}" class="rounded mx-auto d-block img-fluid">
 
 
         <p th:text="${el.anons}"></p>

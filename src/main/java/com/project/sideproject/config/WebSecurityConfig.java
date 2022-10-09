@@ -25,6 +25,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.dataSource = dataSource;
     }
 
+
+
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers(
@@ -38,7 +40,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/resources/**",
                 "/error",
                 "/templates/**"
-
         );
     }
 
@@ -51,10 +52,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/",
                         "/registration",
+                        "/admin/**",
                         "/blog/**",
-                        "/find",
-                        "/login"
-
+                        "/find"
                 ).permitAll()
                 .anyRequest().authenticated()
                 .and()
