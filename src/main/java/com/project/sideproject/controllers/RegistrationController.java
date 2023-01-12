@@ -3,6 +3,7 @@ package com.project.sideproject.controllers;
 import com.project.sideproject.models.Role;
 import com.project.sideproject.models.User;
 import com.project.sideproject.repository.UserRepository;
+import com.project.sideproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,11 +16,11 @@ import java.util.Map;
 public class RegistrationController {
 
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Autowired
-    public RegistrationController(UserRepository userRepository){
-        this.userRepository = userRepository;
+    public RegistrationController(UserService userService){
+        this.userService = userService;
     }
 
     @GetMapping("/registration")
@@ -29,7 +30,7 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String addUser(User user, Map<String, Object> model) {
-        User userFromDb = userRepository.findByUsername(user.getUsername());
+        User userFromDb = userService.findUser(user.getUsername());
 
         if (userFromDb != null) {
             model.put("message", "User exists!");
@@ -38,7 +39,7 @@ public class RegistrationController {
 
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
-        userRepository.save(user);
+        userService.save(user);
 
         return "redirect:/login";
     }

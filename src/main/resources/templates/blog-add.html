@@ -32,6 +32,10 @@
         <h2 th:text="${message}"></h2>
     </div>
 
+    <div id="wrong" th:if="${wrong}">
+        <h2 th:text="${wrong}"></h2>
+    </div>
+
     <div>
 
             <div class="album py-5 bg-light bg-dark" id="cards">
@@ -39,7 +43,7 @@
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                         <div class="col card shadow-sm border-danger">
                             <div th:each="el : ${imageList}" class="card-body">
-                                <img th:src="'/admin/blog/files/' + ${el}" width="100%" height="225">
+                                <img th:src="'/blog/files/' + ${el}" width="100%" height="225">
 
 
                                 <form th:action="'/admin/blog/add/' + ${el} +  '/delete'" th:method="DELETE">

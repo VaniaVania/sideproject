@@ -1,4 +1,5 @@
 package com.project.sideproject.models;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -9,9 +10,17 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
 
-    private String title, anons, fullText;
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "anons")
+    private String anons;
+
+    @Column(name = "full_text")
+    private String fullText;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "post_images_link", joinColumns = @JoinColumn(name = "post_id"))
@@ -95,8 +104,6 @@ public class Post {
                 "in " + data.getHours() +
                 ":" + data.getMinutes();
     }
-
-
 
 
 }

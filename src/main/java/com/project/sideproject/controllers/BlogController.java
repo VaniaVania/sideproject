@@ -1,7 +1,6 @@
 package com.project.sideproject.controllers;
 
 import com.project.sideproject.models.Post;
-import com.project.sideproject.repository.PostRepository;
 import com.project.sideproject.service.PostService;
 import com.project.sideproject.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,32 +24,30 @@ import java.io.IOException;
 @RequestMapping(value = "/blog")
 public class BlogController {
 
-    private final PostRepository postRepository;
     private final PostService postService;
     private final StorageService storageService;
 
     @Autowired
-    public BlogController(PostRepository postRepository, PostService postService, StorageService storageService) {
-        this.postRepository = postRepository;
+    public BlogController(PostService postService, StorageService storageService) {
         this.postService = postService;
         this.storageService = storageService;
     }
 
     @GetMapping
     public String blogMain(Model model) {
-        Iterable<Post> posts = postRepository.findAll();
+        Iterable<Post> posts = postService.findAll();
         model.addAttribute("posts", posts);
         return "blog-main";
     }
 
     @GetMapping("/{id}")
     public String blogDetails(@PathVariable(value = "id") Long id, Model model) {
-        if (postService.postShow(id,model, postRepository)) return "redirect:/blog";
+        if (postService.postShow(id)) return "redirect:/blog";
+        model.addAttribute("post", postService.getPost(id));
         return "blog-details";
     }
 
-    @RequestMapping(value = "/files/{filename:.+}", method = RequestMethod.GET,
-            produces = MediaType.IMAGE_JPEG_VALUE)
+    @RequestMapping(value = "/files/{filename:.+}", method = RequestMethod.GET,produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> showImage(@PathVariable String filename){
         File file = storageService.load(filename).toFile();
         try(FileInputStream fis = new FileInputStream(file)){

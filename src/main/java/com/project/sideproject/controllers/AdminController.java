@@ -1,92 +1,36 @@
 package com.project.sideproject.controllers;
 
 import com.project.sideproject.models.Post;
-import com.project.sideproject.models.Role;
-import com.project.sideproject.models.User;
-import com.project.sideproject.repository.PostRepository;
-import com.project.sideproject.repository.UserRepository;
 import com.project.sideproject.service.PostService;
-import com.project.sideproject.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+import java.util.Date;
 
 @Controller
 @RequestMapping("/admin")
 @PreAuthorize("hasAuthority('ADMIN')")
 public class AdminController {
 
-    private final UserRepository userRepository;
-    private final PostRepository postRepository;
-    private final StorageService storageService;
     private final PostService postService;
 
     @Autowired
-    public AdminController(UserRepository userRepository, PostRepository postRepository, StorageService storageService, PostService postService){
-        this.userRepository = userRepository;
-        this.postRepository = postRepository;
-        this.storageService = storageService;
+    public AdminController(PostService postService) {
         this.postService = postService;
     }
 
     @GetMapping
-    public String adminPanel(){
+    public String adminPanel() {
         return "admin-panel";
     }
 
-    @GetMapping("/users")
-    public String userList(Model model){
-        model.addAttribute("users", userRepository.findAll());
-
-        return "user-list";
-    }
-
-    @GetMapping("/{user}")
-    public String userEditForm(@PathVariable User user, Model model){
-        model.addAttribute("user",user);
-        model.addAttribute("roles", Role.values());
-
-        return "user-edit";
-    }
-
-    @PatchMapping
-    public String userSave(@RequestParam("userId") User user, @RequestParam Map<String, String> form, @RequestParam String userName){
-        user.setUsername(userName);
-        Set<String> roles = Arrays.stream(Role.values()).map(Role::name).collect(Collectors.toSet());
-
-        user.getRoles().clear();
-
-        for(String key : form.keySet()){
-            if (roles.contains(key)){
-                user.getRoles().add(Role.valueOf(key));
-            }
-        }
-        userRepository.save(user);
-
-        return "redirect:/admin/users";
-    }
-
-    @DeleteMapping("/{id}/delete")
-    public String deleteUser(@PathVariable(value = "id") Long id, Model model){
-        User userFromDb = userRepository.findById(id).orElseThrow();
-        userRepository.delete(userFromDb);
-        model.addAttribute("user", userFromDb);
-
-        return "redirect:/admin/users";
-    }
-
     @GetMapping("/edit")
-    public String editPost(Model model){
-        Iterable<Post> posts = postRepository.findAll();
+    public String editPost(Model model) {
+        Iterable<Post> posts = postService.findAll();
         model.addAttribute("posts", posts);
 
         return "admin-blog-edit";
@@ -100,45 +44,35 @@ public class AdminController {
     }
 
     @PostMapping("/blog/add")
-    public String blogPostAdd(@RequestParam String title, @RequestParam String anons, @RequestParam String fullText){
-        Post post = new Post(title,anons,fullText, postService.getImagesList() ,new Date());
-        postRepository.save(post);
+    public String blogPostAdd(@RequestParam String title, @RequestParam String anons, @RequestParam String fullText) {
+        Post post = new Post(title, anons, fullText, postService.getImagesList(), new Date());
+        postService.save(post);
         postService.getImagesList().clear();
-
         return "redirect:/blog";
     }
 
-
     @GetMapping("blog/{id}/edit")
-    public String editPost(@PathVariable(value = "id") Long id,Model model){
-        if (postService.postShow(id,model,postRepository)) return "redirect:/blog";
+    public String editPost(@PathVariable(value = "id") Long id, Model model) {
+        if (postService.postShow(id)) return "redirect:/blog";
+        model.addAttribute("post", postService.getPost(id));
 
         return "blog-edit";
     }
 
     @PatchMapping("blog/{id}/edit")
-    public String editBlogPost(@PathVariable(value = "id") Long id, @RequestParam String title, @RequestParam String anons, @RequestParam String fullText){
-        Post post = postRepository.findById(id).orElseThrow();
-        post.setTitle(title);
-        post.setAnons(anons);
-        post.setFullText(fullText);
-        postRepository.save(post);
+    public String editPost(@PathVariable(value = "id") Long id, @RequestParam String title, @RequestParam String anons, @RequestParam String fullText) {
+        Post post = postService.findById(id).orElseThrow();
+        postService.edit(post,title,anons,fullText);
 
-        return "redirect:/blog";
+        return "redirect:/admin/edit";
     }
 
     @DeleteMapping("blog/{id}/delete")
     public String deletePost(@PathVariable(value = "id") Long id) throws IOException {
-        Post post = postRepository.findById(id).orElseThrow();
+        Post post = postService.findById(id).orElseThrow();
+        postService.delete(post);
 
-        if(!post.getImages().isEmpty()){
-        for(String image: post.getImages()) {
-                storageService.deleteFile("src/main/resources/static/images/" + image);
-            }
-        }
-        postRepository.delete(post);
-
-        return "redirect:/blog";
+        return "redirect:/admin/edit";
     }
 
 }

@@ -17,15 +17,12 @@ import javax.sql.DataSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-
     private final DataSource dataSource;
 
     @Autowired
-    public WebSecurityConfig(DataSource dataSource){
+    public WebSecurityConfig(DataSource dataSource) {
         this.dataSource = dataSource;
     }
-
-
 
     @Override
     public void configure(WebSecurity web) {
@@ -46,8 +43,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
+        http.csrf()
+                .disable()
                 .cors().disable()
                 .authorizeRequests()
                 .antMatchers("/",

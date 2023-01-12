@@ -25,10 +25,10 @@
 
         <div class="album py-5 bg-light bg-dark" id="cards">
             <div class="container">
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                <div class="row row-cols-md-3 g-3">
                     <div class="col card shadow-sm border-danger">
-                        <div th:each="element : ${el.images}" class="card-body">
-                            <img th:src="'/admin/blog/files/' + ${element}" width="100%" height="225">
+                        <div th:each="element : ${el.getImages()}" class="card-body">
+                            <img th:src="'/blog/files/' + ${element}" width="100%" height="225">
 
                             <form th:action="'/admin/blog/' + ${el.id} + '/' + ${element} +  '/delete'" th:method="DELETE">
                                 <button class="btn btn-danger text-end" type="submit">Delete</button>

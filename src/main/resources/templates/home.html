@@ -2,21 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <title th:text="${title}"></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <!-- Bootstrap -->
     <link rel="stylesheet" type="text/css" href="/styles/bootstrap.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="styles/home.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+    <!-- Custom styles -->
+    <link rel="stylesheet" type="text/css" href="/styles/home.css">
 </head>
 
-<header th:insert="blocks/header :: header" > </header>
-
 <body class="body">
-
+<header th:insert="blocks/header :: header"></header>
 <main>
     <!-- The video -->
-    <video autoplay muted loop id="myVideo">
-        <source src="videos/drive.mp4" type="video/mp4">
+    <video autoplay muted loop id="myVideo" class="container mb-2">
+        <source src="/videos/drive.mp4" type="video/mp4" >
     </video>
 
     <!-- Optional: some overlay text to describe the video -->
@@ -24,46 +25,37 @@
         <h1>Autotheme</h1>
         <p>Only legendary cars here</p>
         <!-- Use a button to pause/play the video with JavaScript -->
-        <script src="js/home.js"></script>
+        <script src="/js/home.js"></script>
         <button id="myBtn" onclick="myFunction()">Pause</button>
     </div>
 
 
-    <div class="album py-5 bg-light bg-dark" id="cards">
+    <div class="album py-3 bg-dark" id="cards">
         <div class="container">
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-
-
-                <div th:each="el : ${posts}" class="col" >
+            <div class="row row-cols-md-3 g-2">
+                <div th:each="el : ${posts}" class="col">
                     <div class="card shadow-sm border-danger">
 
-                        <img th:if="${!el.getImages().isEmpty()}"  th:src="'/blog/files/' + ${el.getImages().get(0)}" width="100%" height="225">
-
+                        <img th:if="${!el.getImages().isEmpty()}" th:src="'/blog/files/' + ${el.getImages().get(0)}"
+                             width="100%" height="225" alt="...">
 
                         <div class="card-body">
-
                             <p class="card-text" th:text="${el.title}"></p>
                             <p class="card-text" th:text="${el.anons}"></p>
                             <div class="d-flex justify-content-between align-items-center ">
-
-
                                 <div class="btn-group">
                                     <a th:href="'/blog/' + ${el.id}" class="btn btn-sm btn-outline-secondary">View</a>
                                 </div>
-
                             </div>
                             <small>
-                                <p class="card-text" th:text="${el.getData().toLocaleString()}"> </p>
+                                <p class="card-text" th:text="${el.getData().toLocaleString()}"></p>
                             </small>
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>
-
 </main>
 </body>
 
