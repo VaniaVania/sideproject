@@ -27,7 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers(
-                // Загрузка статики не зважаючи на роль
+                // Loading statics regardless of role
                 "/images/**",
                 "/videos/**",
                 "/database/**",

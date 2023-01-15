@@ -3,6 +3,7 @@ package com.project.sideproject.controllers;
 import com.project.sideproject.models.Post;
 import com.project.sideproject.service.PostService;
 import com.project.sideproject.service.StorageService;
+import com.project.sideproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -10,10 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,11 +24,13 @@ public class BlogController {
 
     private final PostService postService;
     private final StorageService storageService;
+    private final UserService userService;
 
     @Autowired
-    public BlogController(PostService postService, StorageService storageService) {
+    public BlogController(PostService postService, StorageService storageService, UserService userService) {
         this.postService = postService;
         this.storageService = storageService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -59,6 +59,13 @@ public class BlogController {
             ex.getMessage();
         }
         return null;
+    }
+
+    @ModelAttribute
+    public void isAuthorized(Model model) {
+        model.addAttribute("username", userService.getUsername());
+        model.addAttribute("isAuthenticated", userService.isAuthenticated());
+        model.addAttribute("isAuthorized", userService.isAuthorized());
     }
 
 }

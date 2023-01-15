@@ -2,6 +2,7 @@ package com.project.sideproject.controllers;
 
 import com.project.sideproject.models.Post;
 import com.project.sideproject.service.PostService;
+import com.project.sideproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -17,10 +18,12 @@ import java.util.Date;
 public class AdminController {
 
     private final PostService postService;
+    private final UserService userService;
 
     @Autowired
-    public AdminController(PostService postService) {
+    public AdminController(PostService postService, UserService userService) {
         this.postService = postService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -73,6 +76,13 @@ public class AdminController {
         postService.delete(post);
 
         return "redirect:/admin/edit";
+    }
+
+    @ModelAttribute
+    public void isAuthorized(Model model) {
+        model.addAttribute("username", userService.getUsername());
+        model.addAttribute("isAuthenticated", userService.isAuthenticated());
+        model.addAttribute("isAuthorized", userService.isAuthorized());
     }
 
 }

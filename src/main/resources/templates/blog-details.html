@@ -14,7 +14,7 @@
 <body class="bg-dark" id="blogDetails">
 <main>
 
-<div class="container-xl align-content-center ">
+<div class="container-xl align-content-center py-4">
 
     <div th:each="el : ${post}" class="alert alert-light ">
 
@@ -46,8 +46,7 @@
              <p th:text="${el.fullText}"></p>
 
              <hr style="color: #c50f0f">
-             <p th:text="'Posted: ' + ${el.data.toLocaleString()}  "></p>
-
+             <p th:text="'Posted: ' + ${el.data.toGMTString()}  "></p>
 
     </div>
 </div>

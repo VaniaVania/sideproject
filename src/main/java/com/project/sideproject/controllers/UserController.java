@@ -25,29 +25,29 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String userList(Model model){
+    public String userList(Model model) {
         model.addAttribute("users", userService.findAll());
 
         return "user-list";
     }
 
     @GetMapping("/{user}")
-    public String userEditForm(@PathVariable User user, Model model){
-        model.addAttribute("user",user);
+    public String userEditForm(@PathVariable User user, Model model) {
+        model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
 
         return "user-edit";
     }
 
     @PatchMapping
-    public String userSave(@RequestParam("userId") User user, @RequestParam Map<String, String> form, @RequestParam String userName){
+    public String userSave(@RequestParam("userId") User user, @RequestParam Map<String, String> form, @RequestParam String userName) {
         user.setUsername(userName);
         Set<String> roles = Arrays.stream(Role.values()).map(Role::name).collect(Collectors.toSet());
 
         user.getRoles().clear();
 
-        for(String key : form.keySet()){
-            if (roles.contains(key)){
+        for (String key : form.keySet()) {
+            if (roles.contains(key)) {
                 user.getRoles().add(Role.valueOf(key));
             }
         }
@@ -57,11 +57,14 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}/delete")
-    public String deleteUser(@PathVariable(value = "id") Long id, Model model){
+    public String deleteUser(@PathVariable(value = "id") Long id, Model model) {
         User userFromDb = userService.findById(id).orElseThrow();
         userService.delete(userFromDb);
         model.addAttribute("user", userFromDb);
 
         return "redirect:/admin/users";
     }
+
+
+
 }

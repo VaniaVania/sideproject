@@ -6,22 +6,34 @@
         </a>
 
         <nav class="mt-2 mt-md-0 ms-md-auto bg-danger rounded-bottom">
+            <a th:if="${isAuthorized}" class="me-3 py-2 text-dark text-decoration-none" href="/admin">Admin</a>
             <a class="me-3 py-2 text-dark text-decoration-none" href="/blog">Blog</a>
             <a class="me-3 py-2 text-dark text-decoration-none" href="/find">Car Finder</a>
 
             <div class="btn-group">
+
+                <a class="btn btn-secondary dropdown-toggle bg-danger text-dark" type="button" id="logout"
+                   data-bs-toggle="dropdown" aria-expanded="false" th:if="${isAuthenticated}" th:text="${username}">
+                </a>
+
                 <a class="btn btn-secondary dropdown-toggle bg-danger text-dark" type="button" id="dropdownMenuButton"
-                   data-bs-toggle="dropdown" aria-expanded="false">
+                   data-bs-toggle="dropdown" aria-expanded="false" th:if="!${isAuthenticated}">
                     Sign in
                 </a>
-                <ul class="dropdown-menu bg-danger me-3 py-2" aria-labelledby="dropdownMenuButton">
+
+                <ul th:if="!${isAuthenticated}" class="dropdown-menu bg-danger me-3 py-2" aria-labelledby="dropdownMenuButton">
                     <li><a class="text-decoration-none dropdown-item" href="/login">Login</a></li>
+                </ul>
+
+                <ul th:if="${isAuthenticated}" class="dropdown-menu bg-danger me-3 py-2" aria-labelledby="logout">
                     <li>
                         <form class="dropdown-item bg-danger text-dark" th:action="@{/logout}" th:method="POST">
                             <input class="btn-danger text-dark" type="submit" value="Sign Out"/>
                         </form>
                     </li>
                 </ul>
+
+
             </div>
         </nav>
     </div>

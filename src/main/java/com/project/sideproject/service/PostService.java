@@ -5,7 +5,6 @@ import com.project.sideproject.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,7 +26,6 @@ public class PostService {
     }
 
     public boolean postShow(Long id) {
-        getPost(id);
         return !postRepository.existsById(id);
     }
 
@@ -54,7 +52,6 @@ public class PostService {
     public void removePostImage(Long id, String filename){
         Post post = postRepository.findById(id).orElseThrow();
         post.getImages().remove(filename);
-        postRepository.save(post);
     }
 
     public Optional<Post> findById(Long id){
