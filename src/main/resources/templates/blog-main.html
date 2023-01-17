@@ -22,20 +22,16 @@
         <div th:each="el : ${posts}" class="alert alert-light mt-4">
             <h3 id="title" th:text="${el.title}"></h3>
             <img th:if="${!el.getImages().isEmpty()}" th:src="'/blog/files/' + ${el.getImages().get(0)}"
-                 class="rounded mx-auto d-block img-fluid">
+                 class="rounded mx-auto d-block img-fluid" alt="">
             <p th:text="${el.anons}"></p>
             <a th:href="'/blog/' + ${el.id}" class="btn btn-danger">Read</a>
             <small>
                 <p id="postedTime" class="card-text" th:text="'Posted: ' + ${el.getData().toLocaleString()}"></p>
             </small>
-
         </div>
+
     </div>
-
-
 </main>
-</body>
-
 <div th:insert="blocks/footer :: footer"></div>
-
+</body>
 </html>

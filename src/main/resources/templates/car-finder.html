@@ -2,49 +2,57 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <title th:text="${title}"></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="/styles/bootstrap.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+    <!--Vue.js-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="/styles/car-finder.css">
 </head>
 
-<header th:insert="blocks/header :: header"> </header>
-
 <body class="bg-dark">
-
-<div id="app">
+<header th:insert="blocks/header :: header"></header>
+<main>
+<div id="app" class="container mt-2">
 
     <h1>Find your car</h1>
     <h3>it`s easier than you think...</h3>
 
     <div th:align="center">
-    <select v-model="level1" @change="chooselevel1">
-        <option :value="item" v-for="item in Object.keys(level1List)">{{item}}</option>
-    </select>
+        <label>
+            <select v-model="level1" @change="chooselevel1">
+                <option :value="item" v-for="item in Object.keys(level1List)">{{item}}</option>
+            </select>
+        </label>
 
-    <select v-model="level2" v-if="level1">
-        <option :value="item" v-for="item in level2List">{{item}}</option>
-    </select>
+        <label>
+            <select v-model="level2" v-if="level1">
+                <option :value="item" v-for="item in level2List">{{item}}</option>
+            </select>
+        </label>
 
-     <br>
-    <b><a class="link-danger" style="font-family: Bahnschrift,serif" target="_blank" :href="`https://www.google.com/search?q=${level1}%20${level2}&tbm=isch`">{{ level1 }} {{ level2 }}</a></b>
+        <br>
+        <b><a class="link-danger" style="font-family: Bahnschrift,serif" target="_blank"
+              :href="`https://www.google.com/search?q=${level1}%20${level2}&tbm=isch`">{{ level1 }} {{ level2 }}</a></b>
     </div>
 </div>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="styles/car-finder.css">
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
 <script id="selectId">
     const app = new Vue({
         el: '#app',
         data: {
             level1: "",
             level2: "",
-
             level1List: [],
             level2List: [],
-
             json: []
         },
 
@@ -52,7 +60,6 @@
             chooselevel1() {
                 this.level2 = ""
                 this.level2List = []
-
                 this.level2List = this.level1List[this.level1]
             },
         },
@@ -64,6 +71,7 @@
         }
     })
 </script>
-
+</main>
+<div th:insert="blocks/footer :: footer"></div>
 </body>
 </html>

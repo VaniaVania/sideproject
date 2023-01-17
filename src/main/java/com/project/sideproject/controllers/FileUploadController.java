@@ -15,7 +15,7 @@ import java.io.IOException;
 
 @Controller
 @RequestMapping(value = "/admin/blog/")
-@PreAuthorize("hasAuthority('ADMIN')")
+@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 public class FileUploadController {
 
     private final StorageService storageService;

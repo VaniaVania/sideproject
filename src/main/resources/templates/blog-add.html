@@ -1,49 +1,56 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head>
     <title>Blog of site</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="/styles/bootstrap.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+    <!-- Custom styles -->
     <link rel="stylesheet" type="text/css" href="/styles/blog-add.css">
 </head>
 
-<header th:insert="blocks/header :: header"> </header>
-
 <body class="bg-dark" id="blogAdd">
+<header th:insert="blocks/header :: header"></header>
 <main>
 
-<div class="container mt-5 mb-5 border-danger">
-    <h1>Add Post</h1>
+    <div class="container mt-5 mb-5 border-danger">
+        <h1>Add Post</h1>
 
-    <form th:method="POST" enctype="multipart/form-data" action="/admin/blog/add" >
+        <form th:method="POST" enctype="multipart/form-data" action="/admin/blog/add">
 
-        <input type="text" name="title" placeholder="Write the name of the post" class="form-control"><br>
-        <input type="text" name="anons" placeholder="Write the anons of the post" class="form-control"><br>
-        <textarea name="fullText" placeholder="Write the full text of the post" class="form-control"></textarea><br>
+            <label>
+                <input type="text" name="title" placeholder="Write the name of the post" class="form-control">
+            </label><br>
+            <label>
+                <input type="text" name="anons" placeholder="Write the anons of the post" class="form-control">
+            </label><br>
+            <label>
+                <textarea name="fullText" placeholder="Write the full text of the post" class="form-control"></textarea>
+            </label><br>
 
-        <button type="submit" class="btn btn-danger">Add post</button>
-    </form>
+            <button type="submit" class="btn btn-danger">Add post</button>
+        </form>
 
-    <div id="message" th:if="${message}">
-        <h2 th:text="${message}"></h2>
-    </div>
+        <div id="message" th:if="${message}">
+            <h2 th:text="${message}"></h2>
+        </div>
 
-    <div id="wrong" th:if="${wrong}">
-        <h2 th:text="${wrong}"></h2>
-    </div>
+        <div id="wrong" th:if="${wrong}">
+            <h2 th:text="${wrong}"></h2>
+        </div>
 
-    <div>
+        <div>
 
-            <div class="album py-5 bg-light bg-dark" id="cards">
+            <div class="album py-5 bg-dark" id="cards">
                 <div class="container">
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                         <div class="col card shadow-sm border-danger">
                             <div th:each="el : ${imageList}" class="card-body">
-                                <img th:src="'/blog/files/' + ${el}" width="100%" height="225">
+                                <img th:src="'/blog/files/' + ${el}" width="100%" height="225" alt="">
 
 
                                 <form th:action="'/admin/blog/add/' + ${el} +  '/delete'" th:method="DELETE">
@@ -56,16 +63,20 @@
                 </div>
             </div>
         </div>
-</div>
+    </div>
     <form th:method="POST" enctype="multipart/form-data" action="/admin/blog/add/upload">
         <table>
-            <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
-            <tr><td></td><td><input class="btn-danger" type="submit" value="Upload" /></td></tr>
+            <tr>
+                <td>File to upload:</td>
+                <td><input type="file" name="file"/></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input class="btn-danger" type="submit" placeholder="Choose the file" value="Upload"/></td>
+            </tr>
         </table>
     </form>
 </main>
-</body>
-
 <div th:insert="blocks/footer :: footer"></div>
-
+</body>
 </html>

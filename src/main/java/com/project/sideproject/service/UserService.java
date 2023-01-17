@@ -46,7 +46,7 @@ public class UserService {
     }
 
     public boolean isAuthorized(){
-        return isAuthenticated() && ((UserDetails) getAuthentication().getPrincipal()).getAuthorities().toString().contains("ADMIN");
+        return isAuthenticated() && ((UserDetails) getAuthentication().getPrincipal()).getAuthorities().toString().contains("ROLE_ADMIN");
 
     }
 
