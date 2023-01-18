@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-
 @Controller
 @RequestMapping(value = "/blog")
 public class BlogController {
@@ -42,7 +41,7 @@ public class BlogController {
 
     @GetMapping("/{id}")
     public String blogDetails(@PathVariable(value = "id") Long id, Model model) {
-        if (postService.postShow(id)) return "redirect:/blog";
+        if (postService.notExistsById(id)) return "redirect:/blog";
         model.addAttribute("post", postService.getPost(id));
         return "blog-details";
     }

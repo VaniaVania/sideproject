@@ -5,6 +5,7 @@ import com.project.sideproject.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,16 +18,11 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final StorageService storageService;
-    private final List<String> imagesList = new ArrayList<>();
 
     @Autowired
-    public PostService(PostRepository postRepository, StorageService storageService){
+    public PostService(PostRepository postRepository, StorageService storageService) {
         this.postRepository = postRepository;
         this.storageService = storageService;
-    }
-
-    public boolean postShow(Long id) {
-        return !postRepository.existsById(id);
     }
 
     public ArrayList<Post> getPost(Long id){
@@ -36,22 +32,16 @@ public class PostService {
         return res;
     }
 
-    public void addPrePostImage(String filename){
-        imagesList.add(filename);
-    }
-
-    public void removePrePostImage(String filename){
-        imagesList.remove(filename);
-    }
-
-    public void addPostImage(Long id, String filename){
+    public void addPostImage(Long id, MultipartFile file){
         Post post = postRepository.findById(id).orElseThrow();
-        post.getImages().add(filename);
+        post.getImages().add(file.getOriginalFilename());
+        storageService.store(file);
     }
 
-    public void removePostImage(Long id, String filename){
+    public void removePostImage(Long id, String filename) throws IOException {
         Post post = postRepository.findById(id).orElseThrow();
         post.getImages().remove(filename);
+        storageService.deleteFile("/src/main/resources/static/images/" + filename);
     }
 
     public Optional<Post> findById(Long id){
@@ -78,7 +68,7 @@ public class PostService {
         if (!post.getImages().isEmpty()) {
             post.getImages().forEach(image -> {
                 try {
-                    storageService.deleteFile("src/main/resources/static/images/" + image);
+                    storageService.deleteFile("/src/main/resources/static/images/" + image);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -87,7 +77,9 @@ public class PostService {
         postRepository.delete(post);
     }
 
-    public List<String> getImagesList() {
-        return imagesList;
+    public boolean notExistsById(Long id){
+        return !postRepository.existsById(id);
     }
+
+
 }
