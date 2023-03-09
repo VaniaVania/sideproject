@@ -30,4 +30,4 @@ I have an idea to develop an original site on the automotive theme. In this case
 ![Знімок екрана 2023-03-10 010606](https://user-images.githubusercontent.com/65613909/224180744-0ac32f8e-0ada-4436-9808-a9fd8180f1d8.png)
 ![Знімок екрана 2023-03-10 010529](https://user-images.githubusercontent.com/65613909/224180929-d8961102-85cf-4a03-ad05-abb8eb155102.png)
 ## P.S
-I appreciate if you try to help me with your propositions and solutions!
+I would appreciate if you try to help me with your propositions and solutions!
