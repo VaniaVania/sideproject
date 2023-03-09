@@ -2,6 +2,7 @@ package com.project.sideproject.controllers;
 
 import com.project.sideproject.service.CreatePostService;
 import com.project.sideproject.service.PostService;
+import com.project.sideproject.service.StorageService;
 import com.project.sideproject.storage.StorageFileNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +21,22 @@ public class FileUploadController {
 
     private final PostService postService;
     private final CreatePostService createPostService;
+    private final StorageService storageService;
 
     @Autowired
-    public FileUploadController(PostService postService, CreatePostService createPostService) {
+    public FileUploadController(PostService postService, CreatePostService createPostService, StorageService storageService) {
         this.postService = postService;
         this.createPostService = createPostService;
+        this.storageService = storageService;
     }
 
     @PostMapping("/add/upload")
-    public String addPrePostImage(@RequestParam("file") MultipartFile file) {
+    public String addPrePostImage(@RequestParam("file") MultipartFile file, RedirectAttributes attributes) {
+        if (storageService.load(file.getOriginalFilename()).toFile().exists()) {
+            attributes.addAttribute("wrong",
+                    "File already exists!");
+            return "redirect:/admin/blog/add";
+        }
         createPostService.addPrePostImage(file);
         return "redirect:/admin/blog/add";
     }
@@ -40,7 +48,14 @@ public class FileUploadController {
     }
 
     @PostMapping("/{id}/edit/upload")
-    public String addPostImage(@PathVariable(value = "id") Long id, @RequestParam("uploadFile") MultipartFile file) {
+    public String addPostImage(@PathVariable(value = "id") Long id, @RequestParam("uploadFile") MultipartFile file, RedirectAttributes attributes) {
+        if (storageService.load(file.getOriginalFilename()).toFile().exists()) {
+            attributes.addFlashAttribute("wrong",
+                    "File already exists!");
+            return "redirect:/admin/blog/{id}/edit";
+        }
+        System.out.println(storageService.load(file.getOriginalFilename()).toFile().exists());
+        System.out.println(storageService.load(file.getOriginalFilename()).toFile());
         postService.addPostImage(id, file);
         return "redirect:/admin/blog/{id}/edit";
     }
@@ -56,13 +71,5 @@ public class FileUploadController {
         return ResponseEntity.notFound().build();
     }
 
-    @ModelAttribute
-    public void attributes(RedirectAttributes attributes) {
-        attributes.addFlashAttribute("message",
-                "You successfully uploaded file!");
-
-        attributes.addFlashAttribute("wrong",
-                "File already exists!");
-    }
 
 }

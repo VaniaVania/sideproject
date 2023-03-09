@@ -1,22 +1,23 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title th:text="${title}"></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <!-- Bootstrap -->
-    <link rel="stylesheet" type="text/css" href="/styles/bootstrap.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    <link href="/styles/bootstrap.css" rel="stylesheet" type="text/css">
+    <script crossorigin="anonymous"
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-            crossorigin="anonymous"></script>
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Custom styles -->
-    <link rel="stylesheet" type="text/css" href="/styles/home.css">
+    <link href="/styles/home.css" rel="stylesheet" type="text/css">
 </head>
 
 <body class="body">
 <header th:insert="blocks/header :: header"></header>
 <main>
     <!-- The video -->
-    <video autoplay muted loop id="myVideo" class="container mb-2">
+    <video autoplay class="container mb-2 py-4" id="myVideo" loop muted>
         <source src="/videos/drive.mp4" type="video/mp4">
     </video>
 
@@ -30,33 +31,38 @@
     </div>
 
 
-    <div class="album py-3 bg-dark" id="cards">
+    <div class="album py-5 bg-dark" id="cards">
         <div class="container">
-            <div class="row row-cols-md-3 g-2">
-                <div th:each="el : ${posts}" class="col">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">
+                <div class="col" th:each="el : ${posts}">
                     <div class="card shadow-sm border-danger">
 
-                        <img th:if="${!el.getImages().isEmpty()}" th:src="'/blog/files/' + ${el.getImages().get(0)}"
-                             width="100%" height="225" alt="...">
+                        <img alt="..." height="225"
+                             th:if="${!el.getImages().isEmpty()}" th:src="'/blog/files/' + ${el.getImages().get(0)}" width="100%">
 
                         <div class="card-body">
-                            <p class="card-text" th:text="${el.title}"></p>
-                            <p class="card-text" th:text="${el.anons}"></p>
-                            <div class="d-flex justify-content-between align-items-center ">
-                                <div class="btn-group">
-                                    <a th:href="'/blog/' + ${el.id}" class="btn btn-sm btn-outline-secondary">View</a>
+                            <p class="card-text fw-bold" th:text="${el.title}"></p>
+                            <p class="card-text shadow-lg rounded-3" th:text="${el.anons}"></p>
+
+                            <div class="row">
+                                <div class="col">
+                                    <a class="btn btn-sm btn-danger" th:href="'/blog/' + ${el.id}">View</a>
+                                </div>
+                                <div class="col-8">
+                                    <small>
+                                        <a class="card-text text-decoration-none text-dark"
+                                           th:text="'Posted: ' + ${el.getData().toLocaleString()}"></a>
+                                    </small>
                                 </div>
                             </div>
-                            <small>
-                                <p class="card-text" th:text="${el.getData().toLocaleString()}"></p>
-                            </small>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <br>
 </main>
-<div th:insert="blocks/footer :: footer"></div>
+<footer th:insert="blocks/footer :: footer"></footer>
 </body>
 </html>

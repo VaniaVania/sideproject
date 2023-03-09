@@ -1,4 +1,7 @@
-#footerFont{
+body{
     font-family: Bahnschrift, serif;
 }
 
+br{
+    line-height:100px;
+}

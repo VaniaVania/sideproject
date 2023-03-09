@@ -1,35 +1,29 @@
 package com.project.sideproject.controllers;
 
 import com.project.sideproject.models.Post;
+import com.project.sideproject.service.ImageService;
 import com.project.sideproject.service.PostService;
-import com.project.sideproject.service.StorageService;
-import com.project.sideproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping(value = "/blog")
 public class BlogController {
 
     private final PostService postService;
-    private final StorageService storageService;
-    private final UserService userService;
+    private final ImageService imageService;
 
     @Autowired
-    public BlogController(PostService postService, StorageService storageService, UserService userService) {
+    public BlogController(PostService postService, ImageService imageService) {
         this.postService = postService;
-        this.storageService = storageService;
-        this.userService = userService;
+        this.imageService = imageService;
     }
 
     @GetMapping
@@ -48,23 +42,6 @@ public class BlogController {
 
     @RequestMapping(value = "/files/{filename:.+}", method = RequestMethod.GET,produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> showImage(@PathVariable String filename){
-        File file = storageService.load(filename).toFile();
-        try(FileInputStream fis = new FileInputStream(file)){
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_JPEG);
-            return new ResponseEntity<>(fis.readAllBytes(), headers, HttpStatus.CREATED);
-        }
-        catch (IOException ex){
-            ex.getMessage();
-        }
-        return null;
+        return imageService.showImage(filename);
     }
-
-    @ModelAttribute
-    public void isAuthorized(Model model) {
-        model.addAttribute("username", userService.getUsername());
-        model.addAttribute("isAuthenticated", userService.isAuthenticated());
-        model.addAttribute("isAuthorized", userService.isAuthorized());
-    }
-
 }

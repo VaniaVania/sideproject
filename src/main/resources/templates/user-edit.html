@@ -1,31 +1,37 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-
-    <link rel="stylesheet" type="text/css" href="/styles/bootstrap.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="/styles/bootstrap.css" rel="stylesheet" type="text/css">
+    <script crossorigin="anonymous"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <title>Title</title>
 </head>
-<body>
-User Editor
 
+<header th:insert="blocks/header :: header"></header>
+<body class="bg-dark" style="font-family: Bahnschrift, serif;">
 
-<form th:action="@{/admin}" th:method="PATCH">
-    <div th:each="role : ${roles}">
-      <label>
-        <input type="checkbox" th:name="${role}" th:text="${role}">
-      </label>
-    </div>
+<div class="container py-5">
+    <form th:action="@{/admin}" th:method="PATCH">
+        <div class="text-danger py-4" th:each="role : ${roles}">
+            <label>
+                <input class="form-check-input mt-0" th:name="${role}" th:text="${role}" type="checkbox">
+            </label>
+        </div>
 
-    <input type="hidden" th:value="${user.id}" name="userId">
-    <input type="text" th:value="${user.username}" name="userName">
-    <button type="submit">Save</button>
-</form>
+        <input name="userId" th:value="${user.id}" type="hidden">
+        <label>
+            <input class="form-control" name="userName" th:value="${user.username}" type="text">
+        </label>
+        <button class="btn btn-danger text-dark" type="submit">Save</button>
+    </form>
 
-<form th:each="u : ${user}" th:action="'/admin/' + ${u.id} + '/delete'" th:method="DELETE">
-    <button class="btn btn-danger text-end" type="submit">Delete</button>
-</form>
+    <form th:action="'/admin/' + ${u.id} + '/delete'" th:each="u : ${user}" th:method="DELETE">
+        <button class="btn btn-danger text-end text-dark" type="submit">Delete</button>
+    </form>
 
+</div>
 </body>
 </html>

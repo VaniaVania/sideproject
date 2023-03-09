@@ -1,60 +1,64 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>Blog of site</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="/styles/bootstrap.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    <link href="/styles/bootstrap.css" rel="stylesheet">
+    <script crossorigin="anonymous"
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-            crossorigin="anonymous"></script>
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Custom styles -->
-    <link rel="stylesheet" type="text/css" href="/styles/blog-add.css">
+    <link href="/styles/blog-add.css" rel="stylesheet" type="text/css">
 </head>
 
 <body class="bg-dark" id="blogAdd">
 <header th:insert="blocks/header :: header"></header>
 <main>
 
-    <div class="container mt-5 mb-5 border-danger">
+    <div class="container mt-5 mb-5 py-5 border-danger">
         <h1>Add Post</h1>
 
-        <form th:method="POST" enctype="multipart/form-data" action="/admin/blog/add">
+        <form action="/admin/blog/add" enctype="multipart/form-data" th:method="POST">
 
-            <label>
-                <input type="text" name="title" placeholder="Write the name of the post" class="form-control">
-            </label><br>
-            <label>
-                <input type="text" name="anons" placeholder="Write the anons of the post" class="form-control">
-            </label><br>
-            <label>
-                <textarea name="fullText" placeholder="Write the full text of the post" class="form-control"></textarea>
-            </label><br>
 
-            <button type="submit" class="btn btn-danger">Add post</button>
+            <input class="form-control" name="title" placeholder="Write the name of the post" type="text">
+            <br>
+            <input class="form-control" name="anons" placeholder="Write the anons of the post" type="text">
+            <br>
+            <textarea class="form-control" name="fullText" placeholder="Write the full text of the post"></textarea>
+            <br>
+
+            <button class="btn btn-danger text-dark" type="submit">Add post</button>
         </form>
 
         <div id="message" th:if="${message}">
             <h2 th:text="${message}"></h2>
         </div>
 
-        <div id="wrong" th:if="${wrong}">
+        <div id="wrong">
             <h2 th:text="${wrong}"></h2>
         </div>
 
         <div>
 
-            <div class="album py-5 bg-dark" id="cards">
+            <h2 class="mt-5 text-danger text-decoration-none">Files to upload:</h2>
+            <br>
+
+            <div class="album bg-dark" id="cards">
                 <div class="container">
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                        <div class="col card shadow-sm border-danger">
-                            <div th:each="el : ${imageList}" class="card-body">
-                                <img th:src="'/blog/files/' + ${el}" width="100%" height="225" alt="">
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">
+                        <div class="col card shadow-sm bg-dark">
+                            <div class="card-body" th:each="el : ${imageList}">
+                                <img alt="" class="img-fluid border-danger" height="225"
+                                     th:src="'/blog/files/' + ${el}" width="100%">
 
 
-                                <form th:action="'/admin/blog/add/' + ${el} +  '/delete'" th:method="DELETE">
-                                    <button class="btn btn-danger text-end" type="submit">Delete</button>
+                                <form class="text-center" th:action="'/admin/blog/add/' + ${el} +  '/delete'"
+                                      th:method="DELETE">
+                                    <button class="btn btn-danger text-end text-dark mt-2" type="submit">Delete</button>
                                 </form>
 
                             </div>
@@ -63,19 +67,19 @@
                 </div>
             </div>
         </div>
+
+        <form action="/admin/blog/add/upload" enctype="multipart/form-data" th:method="POST">
+
+            <label class="mt-2">
+                <input name="file" type="file"/>
+            </label>
+            <br>
+            <input class="btn btn-dark text-danger border-danger mt-2" placeholder="Choose the file" type="submit"
+                   value="Upload"/>
+        </form>
+
     </div>
-    <form th:method="POST" enctype="multipart/form-data" action="/admin/blog/add/upload">
-        <table>
-            <tr>
-                <td>File to upload:</td>
-                <td><input type="file" name="file"/></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input class="btn-danger" type="submit" placeholder="Choose the file" value="Upload"/></td>
-            </tr>
-        </table>
-    </form>
+
 </main>
 <div th:insert="blocks/footer :: footer"></div>
 </body>

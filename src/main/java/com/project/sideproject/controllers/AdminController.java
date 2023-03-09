@@ -3,7 +3,6 @@ package com.project.sideproject.controllers;
 import com.project.sideproject.models.Post;
 import com.project.sideproject.service.CreatePostService;
 import com.project.sideproject.service.PostService;
-import com.project.sideproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -19,13 +18,11 @@ import java.util.Date;
 public class AdminController {
 
     private final PostService postService;
-    private final UserService userService;
     private final CreatePostService createPostService;
 
     @Autowired
-    public AdminController(PostService postService, UserService userService, CreatePostService createPostService) {
+    public AdminController(PostService postService, CreatePostService createPostService) {
         this.postService = postService;
-        this.userService = userService;
         this.createPostService = createPostService;
     }
 
@@ -69,7 +66,7 @@ public class AdminController {
     @PatchMapping("blog/{id}/edit")
     public String adminPostList(@PathVariable(value = "id") Long id, @RequestParam String title, @RequestParam String anons, @RequestParam String fullText) {
         Post post = postService.findById(id).orElseThrow();
-        postService.edit(post,title,anons,fullText);
+        postService.edit(post, title, anons, fullText);
 
         return "redirect:/admin/edit";
     }
@@ -81,12 +78,4 @@ public class AdminController {
 
         return "redirect:/admin/edit";
     }
-
-    @ModelAttribute
-    public void isAuthorized(Model model) {
-        model.addAttribute("username", userService.getUsername());
-        model.addAttribute("isAuthenticated", userService.isAuthenticated());
-        model.addAttribute("isAuthorized", userService.isAuthorized());
-    }
-
 }

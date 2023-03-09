@@ -25,14 +25,14 @@ public class PostService {
         this.storageService = storageService;
     }
 
-    public ArrayList<Post> getPost(Long id){
+    public ArrayList<Post> getPost(Long id) {
         Optional<Post> post = postRepository.findById(id);
         ArrayList<Post> res = new ArrayList<>();
         post.ifPresent(res::add);
         return res;
     }
 
-    public void addPostImage(Long id, MultipartFile file){
+    public void addPostImage(Long id, MultipartFile file) {
         Post post = postRepository.findById(id).orElseThrow();
         post.getImages().add(file.getOriginalFilename());
         storageService.store(file);
@@ -41,25 +41,25 @@ public class PostService {
     public void removePostImage(Long id, String filename) throws IOException {
         Post post = postRepository.findById(id).orElseThrow();
         post.getImages().remove(filename);
-        storageService.deleteFile("/src/main/resources/static/images/" + filename);
+        storageService.deleteFile("src/main/resources/static/images/" + filename);
     }
 
-    public Optional<Post> findById(Long id){
+    public Optional<Post> findById(Long id) {
         return postRepository.findById(id);
     }
 
-    public List<Post> findAll(){
+    public List<Post> findAll() {
         return postRepository.findAll();
     }
 
-    public void edit(Post post, String title, String anons, String fullText){
+    public void edit(Post post, String title, String anons, String fullText) {
         post.setTitle(title);
         post.setAnons(anons);
         post.setFullText(fullText);
         postRepository.save(post);
     }
 
-    public void save(Post post){
+    public void save(Post post) {
         postRepository.save(post);
     }
 
@@ -68,7 +68,7 @@ public class PostService {
         if (!post.getImages().isEmpty()) {
             post.getImages().forEach(image -> {
                 try {
-                    storageService.deleteFile("/src/main/resources/static/images/" + image);
+                    storageService.deleteFile("src/main/resources/static/images/" + image);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -77,7 +77,7 @@ public class PostService {
         postRepository.delete(post);
     }
 
-    public boolean notExistsById(Long id){
+    public boolean notExistsById(Long id) {
         return !postRepository.existsById(id);
     }
 

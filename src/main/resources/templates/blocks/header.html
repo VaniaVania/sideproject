@@ -1,40 +1,62 @@
-<div th:fragment="header" id="headerFont">
-    <link rel="stylesheet" type="text/css" th:href="@{/styles/header.css}">
-    <div class="d-flex flex-md-row dropdown-header bg-dark border-bottom border-danger">
-        <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+<nav class="navbar navbar-expand-md fixed-top bg-dark border-bottom border-danger" id="headerFont" th:fragment="header">
+    <link rel="stylesheet" th:href="@{/styles/header.css}" type="text/css">
+    <div class="container-fluid">
+        <a class="d-flex align-items-center text-dark text-decoration-none" href="/">
             <span class="fs-4 bg-danger rounded-bottom">Autotheme</span>
         </a>
 
-        <nav class="mt-2 mt-md-0 ms-md-auto bg-danger rounded-bottom">
-            <a th:if="${isAuthorized}" class="me-3 py-2 text-dark text-decoration-none" href="/admin">Admin</a>
-            <a class="me-3 py-2 text-dark text-decoration-none" href="/blog">Blog</a>
-            <a class="me-3 py-2 text-dark text-decoration-none" href="/find">Car Finder</a>
+        <button aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation"
+                class="navbar-toggler collapsed"
+                data-bs-target="#navbarHeader" data-bs-toggle="collapse" type="button">
+            <svg class="bi bi-back" fill="currentColor" height="35" viewBox="0 0 16 16" width="35"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2z"/>
+            </svg>
+        </button>
 
-            <div class="btn-group">
+        <div class="collapse navbar-collapse justify-content-end" id="navbarHeader">
+            <ul class="navbar-nav d-flex align-items-sm-start align-items-md-center">
+                <li class="nav-item py-2">
+                    <a class="me-3 py-2 text-danger text-decoration-none" href="/admin"
+                       th:if="${isAuthorized}">Admin</a>
+                </li>
+                <li class="nav-item py-2">
+                    <a class="me-3 py-2 text-danger text-decoration-none" href="/blog">Blog</a>
+                </li>
+                <li class="nav-item py-2">
+                    <a class="me-3 py-2 text-danger text-decoration-none" href="/find">Car Finder</a>
+                </li>
 
-                <a class="btn btn-secondary dropdown-toggle bg-danger text-dark" type="button" id="logout"
-                   data-bs-toggle="dropdown" aria-expanded="false" th:if="${isAuthenticated}" th:text="${username}">
-                </a>
+                <li class="nav-item dropdown py-sm-2">
 
-                <a class="btn btn-secondary dropdown-toggle bg-danger text-dark" type="button" id="dropdownMenuButton"
-                   data-bs-toggle="dropdown" aria-expanded="false" th:if="!${isAuthenticated}">
-                    Sign in
-                </a>
+                    <a aria-expanded="false"
+                       class="dropdown-toggle bg-danger text-decoration-none text-dark btn btn-danger"
+                       data-bs-toggle="dropdown"
+                       id="dropdownMenuButton" th:if="${isAuthenticated}" th:text="${username}" type="button">
+                    </a>
 
-                <ul th:if="!${isAuthenticated}" class="dropdown-menu bg-danger me-3 py-2" aria-labelledby="dropdownMenuButton">
-                    <li><a class="text-decoration-none dropdown-item" href="/login">Login</a></li>
-                </ul>
+                    <a aria-expanded="false"
+                       class=" dropdown-toggle bg-danger text-decoration-none text-dark btn btn-danger"
+                       data-bs-toggle="dropdown"
+                       th:if="!${isAuthenticated}" type="button">
+                        Sign in
+                    </a>
 
-                <ul th:if="${isAuthenticated}" class="dropdown-menu bg-danger me-3 py-2" aria-labelledby="logout">
-                    <li>
-                        <form class="dropdown-item bg-danger text-dark" th:action="@{/logout}" th:method="POST">
-                            <input class="btn-danger text-dark" type="submit" value="Sign Out"/>
-                        </form>
-                    </li>
-                </ul>
+                    <ul aria-labelledby="menu1"
+                        class="dropdown-menu dropdown-menu-sm-start dropdown-menu-md-end dropdown-menu-lg-end bg-danger"
+                        role="menu">
+                        <li role="presentation"><a class="dropdown-item d-flex gap-2 align-items-center rounded-2"
+                                                   href="/login" th:if="!${isAuthenticated}" th:method="GET">Login</a>
+                        </li>
+                        <li role="presentation"><a class="dropdown-item d-flex gap-2 align-items-center rounded-2"
+                                                   href="/logout"
+                                                   th:if="${isAuthenticated}" th:method="GET">Logout</a></li>
+                    </ul>
+                </li>
 
-
-            </div>
-        </nav>
+            </ul>
+        </div>
     </div>
-</div>
+    <!--Css links-->
+    <link href="/styles/header.css" rel="stylesheet">
+</nav>

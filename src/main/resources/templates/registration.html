@@ -1,29 +1,32 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+>
 <head>
     <title>Registration</title>
-
-    <link rel="stylesheet" href="/styles/bootstrap.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="/styles/bootstrap.css" rel="stylesheet">
+    <script crossorigin="anonymous"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
-<header th:insert="blocks/header :: header"> </header>
+<header th:insert="blocks/header :: header"></header>
 
-<body class="bg-dark text-danger">
+<body class="bg-dark text-danger py-5" style="font-family: Bahnschrift, serif;">
 
-<div class="card text-bg-primary mb-3 border-danger bg-dark container-fluid justify-content-center" style="max-width: 18rem;">
-    <div class="card-header">Add new user</div>
-    <div class="card-body">
+<div class="card text-bg-primary mb-3 border-danger bg-dark container-fluid justify-content-center py-5"
+     style="max-width: 18rem;">
+    <div class="card-header text-center">Add new user</div>
+    <div class="card-body justify-content-center text-center">
 
-        <form th:action="@{/registration}" method="post">
-            <div><label> User Name : <input type="text" name="username"/> </label></div>
-            <div><label> Password: <input type="password" name="password"/> </label></div>
-            <div><input class="btn-danger" type="submit" value="Register"/></div>
+        <form method="post" th:action="@{/registration}">
+            <div><label> User Name : <input name="username" type="text"/> </label></div>
+            <div><label> Password: <input name="password" type="password"/> </label></div>
+            <div class="py-3"><input class="btn btn-danger text-dark" type="submit" value="Register"/></div>
         </form>
 
     </div>
 </div>
-
 </body>
+<div th:insert="blocks/footer :: footer"></div>
 </html>

@@ -1,3 +1,7 @@
 #headerFont{
     font-family: Bahnschrift, serif;
 }
+
+.navbar-toggler{
+    color: #c50f0f;
+}

@@ -2,7 +2,6 @@ package com.project.sideproject.controllers;
 
 import com.project.sideproject.models.Role;
 import com.project.sideproject.models.User;
-import com.project.sideproject.repository.UserRepository;
 import com.project.sideproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,11 +14,10 @@ import java.util.Map;
 @Controller
 public class RegistrationController {
 
-
     private final UserService userService;
 
     @Autowired
-    public RegistrationController(UserService userService){
+    public RegistrationController(UserService userService) {
         this.userService = userService;
     }
 
